@@ -9,9 +9,12 @@ You can learn about using Tidal at http://tidal.lurk.org.
 This code uses the experimental tidal-midi module, found in
 the `portmidi` branch of https://github.com/lennart/tidal-midi
 
-## Video of performance
+## Video and Audio
 
 A video of the performance can be found at https://youtu.be/BWqh15urAPw
+
+Audio mix is available at https://soundcloud.com/kindohm/dare-to-step-away
+
 
 ## License
 
