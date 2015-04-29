@@ -1,0 +1,67 @@
+-- midi boilerplate, requires tidal-midi module:
+-- https://github.com/lennart/tidal-midi
+import Sound.Tidal.MIDI.Output
+import Sound.Tidal.VolcaKeys
+keyStreams <- keyproxy 1 4 keys [1]
+[k1] <- sequence keyStreams
+
+-- fancy functions
+let rip a b p = within (0.25, 0.75) (slow 2 . rev . stut 8 a b) p
+let rip' a b c d e p = within (a, b) (slow 2 . rev . stut c d e) p
+
+-- Allegro 140 bpm. ok so it's half-time dub'ish so it's more like Adagio.
+bps (140/120)
+
+-- volca keys bass synth. requires tidal-midi module
+k1 $ note "{32 32/2 33/3}%16"
+|+| kcutoff (scale 0.05 0.3 $ slow 3 sine1)
+|+| attack "0.05"
+|+| decay "0.7"
+|+| vcfegint "0.5"
+
+-- drums and sprinkles
+d1 $ 
+	slowspread ($) [
+		id, 
+		(|+| accelerate "-1 1"), 
+		(|+| coarse "8 4 12"),
+		(|+| speed "1.2 1.5 -1.2 0.8"), 
+		rip 0.2 0.1, 
+		(|+| unit "c"), 
+		trunc 0.25, 
+		trunc 0.25,
+		rip' 0 1 8 0.2 0.1, 
+		gap 4 . rev, 
+		(|+| speed "0.5") . slow 2] $
+	foldEvery [3,4] (0.25 <~) $ 
+	stack [
+		sound "~ bt*2 ~ ~" 
+			|+| gain "0.8",
+		whenmod 16 12 (|+| gain "0") $ 
+			sound "[k:10 ~ ~ k:10] ~ ~ ~",
+		sound "~ teks [~ teks] ~",
+		whenmod 20 8 (|+| gain "0") $ 
+			slow 8 $ 
+			zoom (0, 0.5) $ 
+			striate' 128 (1/20) $ 
+			sound "syn",
+		whenmod 20 12 (|+| gain "0") $ 
+			whenmod 5 3 (jux (iter 4)) $ 
+			stut 4 0.25 0.5 $ 
+			sound "~ s",
+		every 2 (|+| speed "-1") $ 
+			every 4 (|+| coarse "8") $ 
+			sound "~ ~ ~ cpr/3" 
+				|+| gain "0.7",
+		sound "ch*16" 
+			|+| gain "0.7" 
+			|+| cut "3",
+		sound "{oh/3 ~ ~}%16" 
+			|+| gain "0.8" 
+			|+| cut "3",
+		sound "cy/5" 
+			|+| gain "0.8" 
+			|+| speed "0.8",
+		whenmod 6 4 (density 2) $ 
+			sound (samples "pson*8?" (slow 0.812 $ run 12)) 
+			|+| cut "1" ]
