@@ -12,7 +12,7 @@ let rip' a b c d e p = within (a, b) (slow 2 . rev . stut c d e) p
 -- Allegro 140 bpm. ok so it's half-time dub'ish so it's more like Adagio.
 bps (140/120)
 
--- volca keys bass synth. requires tidal-midi module
+-- volca keys bass synth. requires tidal-midi module (and Korg Volca Keys :/)
 k1 $ note "{32 32/2 33/3}%16"
 |+| kcutoff (scale 0.05 0.3 $ slow 3 sine1)
 |+| attack "0.05"
@@ -38,7 +38,7 @@ d1 $
 		sound "~ bt*2 ~ ~" 
 			|+| gain "0.8",
 		whenmod 16 12 (|+| gain "0") $ 
-			sound "[k:10 ~ ~ k:10] ~ ~ ~",
+			sound "[k ~ ~ k] ~ ~ ~",
 		sound "~ teks [~ teks] ~",
 		whenmod 20 8 (|+| gain "0") $ 
 			slow 8 $ 
