@@ -1,4 +1,4 @@
-# Dare to Step Away (live-coded mix source)
+# Dare to Step Away
 
 This repo contains the source code and samples for a performance 
 of "Dare to Step Away". The piece was performed using Tidal and the
